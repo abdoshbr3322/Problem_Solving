@@ -1,3 +1,4 @@
+// بسم الله الرحمن الرحيم
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -34,42 +37,35 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-void make_unique(vi &a) {
-   auto ip = unique(all(a));
-   a.resize(distance(a.begin(), ip));
+
+vll prefix_sum(vi &a) {
+   int n = a.size();
+   vll prefix(n+1, 0);
+   for (int i = 0; i < a.size(); i++) {
+      prefix[i+1] += a[i] + prefix[i];
+   }
+   return prefix;
 }
 
-void input2D(vvi &a, int n, int m) {
+
+vvll prefix_sum_2d(vvi &a) {
+   int n = a.size();
+   int m = a[0].size();
+   vvll prefix(n+1, vll(m+1, 0));
    for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
-         int ai;
-         cin >> ai;
-         a[i].push_back(ai);
+         prefix[i+1][j+1] += prefix[i+1][j] + a[i][j];
       }
    }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+         prefix[i+1][j+1] += prefix[i][j+1];
+      }
    }
-}
-void solve() {
-   int n, d; cin >> n >> d;
-   vi result = {1};
-   if (d % 3 == 0 || n >= 3) result.push_back(3);
-   if (d == 5) result.push_back(5);
-   if (d == 7 || n >= 3) result.push_back(7);
-   if (d == 9 || (n >= 6) || (d % 3 == 0 && n >= 3)) result.push_back(9);
-   for (auto i : result) cout << i << ' ';
-   cout << endl;
+
+   return prefix;
 }
 
-
-int main() {
-   FreePalestine;
-   int t; t = 1;
-   cin >> t;
-   while (t--) solve();
-   return 0;
+ll rect_sum(int x1, int y1, int x2, int y2, vvll &p) {
+   return (p[y2][x2] - p[y2][x1-1] - p[y1-1][x2] + p[y1-1][x1-1]);
 }

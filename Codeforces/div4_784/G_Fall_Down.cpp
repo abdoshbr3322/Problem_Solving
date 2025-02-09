@@ -38,29 +38,27 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define sum_a(n) n *(n + 1) / 2
 
 void solve() {
-   int n; cin >> n;
-   vi a(n); cin >> a;
-
-   int maxi = INT_MIN;
-   
-   // maximize the medium of 2
-   for (int i = 0; i < n-1; i++) {
-      maxi = max(maxi, min(a[i], a[i+1]));
+   int n, m; cin >> n >> m;
+   vector<string> a(n, string(m, '.')); cin >> a;
+   for (int i =n-2; i >= 0; i--) {
+      for (int j = 0; j < m; j++) {
+         if (a[i][j] == '*') {
+            int prev = i;
+            for (int k = i+1; k < n; k++) {
+               if (a[k][j] == '.') prev = k;
+               else break;
+            }
+            swap(a[i][j], a[prev][j]);
+         }
+      }
    }
-   // maximize the med of 3
-   for (int i = 0; i < n-2; i++) {
-      ll sum = 0ll + a[i] + a[i+1] + a[i+2];
-      int m = max({a[i] , a[i+1] , a[i+2]});
-      int m_ = min({a[i] , a[i+1] , a[i+2]});
-      maxi = max((ll)maxi, sum - m - m_);
-   }
-
-   cout << maxi << endl;
+   for (auto i : a) cout << i << endl;
 }
 
 
 int main() {
    FreePalestine;
+
    int t; t = 1;
    cin >> t;
    while (t--) solve();

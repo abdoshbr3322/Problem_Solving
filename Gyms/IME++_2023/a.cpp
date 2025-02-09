@@ -36,55 +36,7 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all(a) a.begin(), a.end()
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
-
-void solve() {
-
-}
-
-
-int main() {
-   FreePalestine;
-   #ifndef ONLINE_JUDGE 
-      freopen("input.txt", "r", stdin); 
-      freopen("output.txt", "w", stdout); 
-   #endif 
-   int t; t = 1;
-   cin >> t;
-   while (t--) solve();
-   return 0;
-}
-
-
-
-vvll prefix_sum_2d(vvi &a) {
-   int n = a.size();
-   int m = a[0].size();
-   vvll prefix(n+1, vll(m+1, 0));
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         prefix[i+1][j+1] += prefix[i+1][j] + a[i][j];
-      }
-   }
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         prefix[i+1][j+1] += prefix[i][j+1];
-      }
-   }
-
-   return prefix;
-}
-
-ll rect_sum(int x1, int y1, int x2, int y2, vvll &p) {
-   return (p[y2][x2] - p[y2][x1-1] - p[y1-1][x2] + p[y1-1][x1-1]);
-}
-void bubble_sort(vi &a) {
-   int n = a.size();
-   for (int i = 0; i < n - 1; i++) {
-      for (int j = 0; j < n - 1 - i; j++)  {
-         if (a[j] > a[j + 1]) swap(a[j], a[j + 1]);
-      }
-   }
-}
+#define int long long
 
 vll prefix_sum(vi &a) {
    int n = a.size();
@@ -95,15 +47,28 @@ vll prefix_sum(vi &a) {
    return prefix;
 }
 
-
-void partialSum(vi &a, int l, int r, int v) {
-   a[l] += v;
-   a[r+1] -= v;
+void solve() {
+   int n; cin >> n ;
+   vi a(n); cin >> a;
+   int m; cin >> m;
+   vi b(m); cin >> b;      
+   vll prefix = prefix_sum(a);
+   for (int i = 0; i < m; i++) {
+      int ans = lower_bound(all(prefix), b[i]) - prefix.begin();
+      cout << prefix[ans] << ' ' << ans << endl;
+   }
 }
 
-int make_unique(vi &a) {
-   auto ip = unique(all(a));
-   int n_size = distance(a.begin(), ip);
-   a.resize(n_size);
-   return n_size;
+
+signed main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }
+

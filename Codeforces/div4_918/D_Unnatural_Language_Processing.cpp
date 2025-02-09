@@ -37,32 +37,54 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
+bool isC(char c) {
+   return (c == 'b' || c == 'c' || c == 'd');
+}
+bool isV(char c) {
+   return (c == 'a' || c == 'e');
+}
+bool isCV(string s) {
+   return (isC(s[0]) && isV(s[1]));
+}
+bool isCVC(string s) {
+   return (isC(s[0]) && isV(s[1]) && isC(s[2]));
+}
+
 void solve() {
    int n; cin >> n;
-   vi a(n); cin >> a;
-
-   int maxi = INT_MIN;
-   
-   // maximize the medium of 2
-   for (int i = 0; i < n-1; i++) {
-      maxi = max(maxi, min(a[i], a[i+1]));
+   string s; cin >> s;
+   vector<string> splits;
+   int i = 0;
+   for (; i < n-2; i++) {
+      string _ = "";
+      string s1 = _ + s[i] + s[i+1];
+      string s2 =  s1 + s[i+2];
+      if (isCV(s1)) {
+         splits.push_back(s1);
+         i++;
+      } else if (isCVC(s2)) {
+         splits.push_back(s2);
+         i+=2;
+      } else {
+         splits.back().push_back(s[i]);
+      }
    }
-   // maximize the med of 3
-   for (int i = 0; i < n-2; i++) {
-      ll sum = 0ll + a[i] + a[i+1] + a[i+2];
-      int m = max({a[i] , a[i+1] , a[i+2]});
-      int m_ = min({a[i] , a[i+1] , a[i+2]});
-      maxi = max((ll)maxi, sum - m - m_);
-   }
-
-   cout << maxi << endl;
+   if (i == n-1 && i++) splits.back().push_back(s.back());
+   else splits.push_back(s.substr(i));
+   for (int i  = 0; i < splits.size(); i++) cout << splits[i] << (i <  splits.size()-1 ? "." : "");
+   cout << endl;
 }
 
 
 int main() {
    FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
    int t; t = 1;
    cin >> t;
    while (t--) solve();
    return 0;
 }
+

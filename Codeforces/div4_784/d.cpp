@@ -1,3 +1,4 @@
+// بسم الله الرحمن الرحيم
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -34,54 +37,27 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-void make_unique(vi &a) {
-   auto ip = unique(all(a));
-   a.resize(distance(a.begin(), ip));
-}
-
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         int ai;
-         cin >> ai;
-         a[i].push_back(ai);
-      }
-   }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
-}
 void solve() {
    int n; cin >> n;
-   vi a(n), b(n); 
-   input(a, n);
-   input(b, n);
-   vi reversed = b;
-   reverse(all(reversed));
-   bool bob1 = true;
-   bool bob2 = true;
+   string s; cin >> s;
+   int r = 0, b = 0;
    for (int i = 0; i < n; i++) {
-      if ((a[i] != b[i])) {
-         bob1 = false;
-         break;
+      if (s[i] == 'R') r++;
+      if (s[i] == 'B') b++;
+      if ((i == n-1 || s[i] == 'W') && ((r+ b) &&( r + b == max(r, b)))) {
+         cout << "NO\n";
+         return;
       }
+      if (s[i] == 'W')
+         r = 0, b = 0;
    }
-   for (int i = 0; i < n; i++) {
-      if ((a[i] != reversed[i])) {
-         bob2 = false;
-         break;
-      }
-   }
-   if (bob1 || bob2) cout << "Bob\n";
-   else cout << "Alice\n"; 
+   cout << "YES\n";
 }
 
 
 int main() {
    FreePalestine;
+
    int t; t = 1;
    cin >> t;
    while (t--) solve();

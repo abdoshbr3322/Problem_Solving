@@ -37,50 +37,27 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-void prefix_sum(vi &a);
-void partialSum(vi &a, int l, int r, int v);
-int make_unique(vi &a);
-
 void solve() {
-   int n, m; cin >> n >> m;
-   vvll a(n, vll(m)); cin >> a;
+   int n; cin >> n;
+   vector<pll> a(n);
    for (int i = 0; i < n; i++) {
-      for (int j = 1; j < m; j++) {
-         a[i][j] = a[i][j] + a[i][j-1];
-      }
+      cin >> a[i].first >> a[i].second;
    }
-   for (int i = 1; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         a[i][j] = a[i][j] + a[i-1][j];
-      }
+   sort(all(a), [&](pll i, pll j) {
+      return (i.first + i.second) < (j.first + j.second);
+   });
+   for (auto i : a) {
+      cout << i.first << ' ' << i.second << ' ';
    }
-   
-   int q; cin >> q;
-   while (q--) {
-      int l1, r1, l2, r2; cin >> l1  >> r1 >> l2 >> r2;
-
-      // 0 Based 
-      l1--, r1--, l2--, r2--;
-
-      ll sum = a[l2][r2];
-      if (l1 > 0)
-         sum -= a[l1-1][r2];
-      if (r1 > 0)
-         sum -= a[l2][r1-1];
-      if (l1 > 0 && r1 > 0)
-         sum += a[l1-1][r1-1];
-      cout << sum << endl;
-   }
+   cout << endl;
 }
 
 
 int main() {
    FreePalestine;
+
    int t; t = 1;
-   // cin >> t;
+   cin >> t;
    while (t--) solve();
    return 0;
 }
-
-// 2D array with vector
-// vvi a(n, vector<int>(n));

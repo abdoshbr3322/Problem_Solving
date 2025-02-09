@@ -15,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -35,70 +37,46 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-int make_unique(vi &a) {
-   auto ip = unique(all(a));
-   int n_size = distance(a.begin(), ip);
-   a.resize(n_size);
-   return n_size;
-}
-
-void input2D(vvi &a, int n, int m) {
+vll prefix_sum(vi &a) {
+   int n = a.size();
+   vll prefix(n+1, 0);
    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         cin >> a[i][j];
-      }
+      prefix[i+1] += a[i] + prefix[i];
    }
+   return prefix;
 }
 
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
-}
 
 void solve() {
-   int n, m, k; cin >> n >> m >> k;
-   vi a(n), b(m);
-   input(a, n); input(b, m);
-   sort(all(a));
-   sort(all(b));
-   int nn = make_unique(a);
-   int mm = make_unique(b);
-
-   vi ans;
-   vector<bool> ex(k+1, 0);
-
-   int c1 = 0, c2 = 0;
-   for (auto i : a) {
-      if (i >= 1 && i <= k) {
-         ex[i] = true;
-         c1++;
-      } else if (i > k) break;
+   int n; cin >> n;
+   vll a(n); cin >> a;
+   vll prefix(n);
+   for (int i = 0;i < n; i++) {
+      if (i % 2 == 0) prefix[i] = -a[i];
+      else prefix[i] = a[i];
+      if (i > 0) prefix[i] += prefix[i-1];
    }
-   for (auto i : b) {
-      if (i >= 1 && i <= k) {
-         ex[i] = true;
-         c2++;
-      } else if (i > k) break;
-   }
-
-   if (c1 >= (k/2) && c2 >= (k/2)) {
-      for (int i = 1; i <= k; i++) {
-         if (ex[i] == 0) {
-            cout << "NO\n";
-            return;
-         }
+   sort(all(prefix));
+   for (int i = 0; i < n; i++) {
+      if ((prefix[i] == 0) || binary_search(prefix.begin()+i+1, prefix.end(), prefix[i])) {
+         cout << "YES\n";
+         return;
       }
-      cout << "YES\n";
    }
-   else cout << "NO\n";
+   cout << "NO\n";
+
 }
 
 
 int main() {
    FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
    int t; t = 1;
    cin >> t;
    while (t--) solve();
    return 0;
 }
+

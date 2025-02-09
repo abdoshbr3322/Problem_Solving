@@ -15,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -35,61 +37,48 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-// void partial_sum(vi &a, int l, int r, int v);
 
-int make_unique(vi &a) {
-   auto ip = unique(all(a));
-   int n_size = distance(a.begin(), ip);
-   a.resize(n_size);
-   return n_size;
-}
-
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         int ai;
-         cin >> ai;
-         a[i].push_back(ai);
-      }
-   }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
-}
+// Wrong
 
 void solve() {
-   int n, q; cin >> n >> q;
-   vi a(n+1, 0);
-
-   while (q--) {
-      int l, r, v; cin >> l >> r >> v;
-      l--, r--;
-      // partial_sum(a, l, r, v);
-      partial_sum(a.begin() + l, a.begin() + r + 1, v);
+   int n; cin >> n;
+   vll a(n); cin >> a;
+   int o = count_if(all(a), [&](int i) {
+      return i % 2;
+   });
+   if (o != n && o !=0 ) {
+      cout << -1 << endl;
+      return;
    }
-   for (int i = 1; i < n; i++) {
-      a[i] += a[i-1];
+   vi op;
+   for (int i = 0; i < 40; i++) {
+      int z = count(all(a), 0);
+      if (z == n) {
+         cout << i << endl;
+         cout << op << endl;
+         return;
+      }
+      ll x;
+      auto other = find_if(all(a), [&](int i) {
+         return i != 0;
+      });
+      int no = count(other, a.end(), *other);
+      if (z && no + z == n) x = *other / 2;
+      else {
+         x = *max_element(all(a)) /2;
+      }
+      op.push_back(x);
+      for (int j = 0; j < n; j++) a[j] = abs(a[j]-x);
    }
-
-   for (int i = 0; i < n; i++) cout << a[i] << ' ';
-   cout << endl;
-
+   cout << -1 << endl;
 }
 
 
 int main() {
    FreePalestine;
+
    int t; t = 1;
-   // cin >> t;
+   cin >> t;
    while (t--) solve();
    return 0;
 }
-
-
-// void partial_sum(vi &a, int l, int r, int v) {
-//    a[l] += v;
-//    a[r+1] -= v;
-// }

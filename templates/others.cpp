@@ -37,31 +37,19 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-void solve() {
-   int n, q; cin >> n >> q; 
-   vi a(n); cin >> a;
-   while (q--) {
-      int x; cin >> x;
-      int l = 0, r = n-1;
-      int in = -1;
-      while (l <= r) {
-         int mid = (l + r) / 2;
-         if (a[mid] >= x) {
-            in = mid;
-            r = mid-1;
-         } else {
-            l = mid+1;
-         }
+void bubble_sort(vi &a) {
+   int n = a.size();
+   for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < n - 1 - i; j++)  {
+         if (a[j] > a[j + 1]) swap(a[j], a[j + 1]);
       }
-      cout << in << ' ';
    }
 }
 
-
-int main() {
-   FreePalestine;
-   int t; t = 1;
-   // cin >> t;
-   while (t--) solve();
-   return 0;
+int make_unique(vi &a) {
+   auto ip = unique(all(a));
+   int n_size = distance(a.begin(), ip);
+   a.resize(n_size);
+   return n_size;
 }
+

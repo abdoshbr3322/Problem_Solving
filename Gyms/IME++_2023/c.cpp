@@ -15,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -34,50 +36,38 @@ using namespace std;
 #define all(a) a.begin(), a.end()
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
+#define int long long
 
-int make_unique(vi &a) {
-   auto ip = unique(all(a));
-   int n_size = distance(a.begin(), ip);
-   a.resize(n_size);
-   return n_size;
-}
-
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         cin >> a[i][j];
-      }
+vll prefix_sum(vi &a) {
+   int n = a.size();
+   vll prefix(n+1, 0);
+   for (int i = 0; i < a.size(); i++) {
+      prefix[i+1] += a[i] + prefix[i];
    }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
+   return prefix;
 }
 
 void solve() {
-   string s; cin >> s;
-   int n = s.size();
-   ll ans = 0;      
-   int ones = 0, zeros = 0;
-   for (int i = 0; i < n; i++) {
-      if (ones && s[i] == '0') zeros++;
-      if ((s[i] == '1' || i == n-1) && zeros) {
-         // cout << "test\n";
-         ans += ((ll)(ones + 1) * zeros);
-         zeros = 0;
+   int n; cin >> n;
+   vi a(n); cin >> a;
+   sort(all(a));
+   ll max_sum = a[0], max = 1;
+   for (int i = 1; i < n; i++) {
+      if (a[i] > max_sum) {
+         max++;
+         max_sum += a[i];
       }
-      if (s[i] == '1') ones++;
    }
-
-   cout << ans << endl;   
-
+   cout << max << ' ' << max_sum << endl;
 }
 
 
-int main() {
+signed main() {
    FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
    int t; t = 1;
    cin >> t;
    while (t--) solve();

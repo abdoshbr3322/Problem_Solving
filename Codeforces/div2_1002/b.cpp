@@ -1,3 +1,4 @@
+// بسم الله الرحمن الرحيم
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -34,40 +37,31 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-void make_unique(vi &a) {
-   auto ip = unique(all(a));
-   a.resize(distance(a.begin(), ip));
-}
-
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         int ai;
-         cin >> ai;
-         a[i].push_back(ai);
+void solve() {
+   int n, k; cin >> n >> k;
+   vi a(n); cin >> a;
+   int ans = (k/2) + 1;
+   
+   for (int i = 1; i < ans; i++) {
+      int start, end;
+      if (i == 1) {
+         start = 1;
+         end = min(start+n-k, n-1);
+      }
+      else {
+         start = (i * 2) - 1 -n + k;
+         end = min((i * 2) - 1 +n - k, n-1);
+      }
+      
+      for (int j = start; j <= end; j++) {
+         if (a[j] != i) {
+            cout << i << endl;
+            return;
+         }
       }
    }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      int ai;
-      cin >> ai;
-      a.push_back(ai);
-   }
-}
-void solve() {
-   int l1, r1, l2, r2; cin >> l1 >> r1 >> l2 >> r2;
-   int maxl = max(l1, l2);
-   int minr = min(r1, r2);
-   if (minr > maxl) {
-      int ans = minr - maxl + 2;
-      if (l1 == l2 && r1 == r2) ans-=2;
-      else if (l1 == l2 || r1 == r2) ans--;
-      cout << ans << endl;
-   }
-   else if (minr == maxl) cout << 2 << endl;
-   else cout << 1 << endl;
+   
+   cout << ans << endl;
 }
 
 
@@ -78,3 +72,4 @@ int main() {
    while (t--) solve();
    return 0;
 }
+

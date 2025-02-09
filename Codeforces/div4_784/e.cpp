@@ -39,28 +39,41 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 
 void solve() {
    int n; cin >> n;
-   vi a(n); cin >> a;
+   vector<string> a(n, string(2, '.')); cin >> a;
+   vector<string> rev(a);
+   for (auto &i : rev) reverse(all(i));
+   sort(all(a));
+   sort(all(rev));
+   ll ans = 0;
+   for (int i = 0; i < n; i++) {
+      string s;
+      // include all strings start with a[i][0]
+      // cout << a[i] << endl;
+      auto l = lower_bound(a.begin() + i, a.end(), s + a[i][0] + 'a');
+      auto r = upper_bound(a.begin() + i, a.end(), s + a[i][0] + 'z');
+      ans += (r - l);
+      // cout << ans << endl;
 
-   int maxi = INT_MIN;
-   
-   // maximize the medium of 2
-   for (int i = 0; i < n-1; i++) {
-      maxi = max(maxi, min(a[i], a[i+1]));
-   }
-   // maximize the med of 3
-   for (int i = 0; i < n-2; i++) {
-      ll sum = 0ll + a[i] + a[i+1] + a[i+2];
-      int m = max({a[i] , a[i+1] , a[i+2]});
-      int m_ = min({a[i] , a[i+1] , a[i+2]});
-      maxi = max((ll)maxi, sum - m - m_);
-   }
+      // include all strings end with rev[i][0]
+      l = lower_bound(rev.begin()+i, rev.end(), s + rev[i][0] + 'a');
+      r = upper_bound(rev.begin()+i, rev.end(), s + rev[i][0] + 'z');
+      ans += (r - l);
+      // cout << ans << endl;
 
-   cout << maxi << endl;
+      // exclude all strings equal to a[i] twice;
+      l = lower_bound(a.begin() + i, a.end(), a[i]);
+      r = upper_bound(a.begin() + i, a.end(), a[i]);
+      ans -= 2 * (r - l);
+      // cout << ans << endl;
+
+   }
+   cout << ans << endl;
 }
 
 
 int main() {
    FreePalestine;
+
    int t; t = 1;
    cin >> t;
    while (t--) solve();

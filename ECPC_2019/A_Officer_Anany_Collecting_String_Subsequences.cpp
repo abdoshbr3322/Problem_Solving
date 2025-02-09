@@ -59,7 +59,13 @@ void solve() {
 }
 
 
-int main() {
+template <typename T> 
+T maxi(T a, T b) {
+   return a;
+}
+int main() 
+
+{
    FreePalestine;
    // #ifndef ONLINE_JUDGE 
       freopen("collectingofficer.in", "r", stdin); 
@@ -68,6 +74,7 @@ int main() {
    // #endif 
    int t; t = 1;
    cin >> t;
+   cout << maxi<double>(1, 2);
    while (t--) solve();
    return 0;
 }

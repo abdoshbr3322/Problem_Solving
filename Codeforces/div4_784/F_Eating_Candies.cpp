@@ -1,3 +1,4 @@
+// بسم الله الرحمن الرحيم
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -34,45 +37,37 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-void make_unique(vi &a) {
-   auto ip = unique(all(a));
-   a.resize(distance(a.begin(), ip));
-}
-
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         int ai;
-         cin >> ai;
-         a[i].push_back(ai);
-      }
-   }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
-}
 void solve() {
    int n; cin >> n;
-   string s; cin >> s;
-   if (s.front() == '1' || s.back() == '1') {
-      cout << "YES\n";
-      return;   
-   }
-   for (int i = 0; i < n-1; i++) {
-      if (s[i] == '1' && s[i+1] == '1') {
-         cout << "YES\n";
-         return;
+   vi a(n); cin >> a;
+   int ans = 0;
+   int l = 0, r = n-1;
+   ll al = a[l], bob = a[r];
+   while (l < r) {
+      while (al > bob) {
+         r--;
+         if (l >= r) break;
+         bob += a[r];
+      }
+      while (bob > al) {
+         l++;
+         if (l >= r) break;
+         al += a[l];
+      }
+      // cout << l << ' ' << r << endl;
+      if (al == bob) {
+         ans = n - r + l + 1;
+         l++; r--;
+         al += a[l], bob += a[r];
       }
    }
-   cout << "NO\n";
+   cout << ans << endl;
 }
 
 
 int main() {
    FreePalestine;
+
    int t; t = 1;
    cin >> t;
    while (t--) solve();

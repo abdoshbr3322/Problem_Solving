@@ -15,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -35,50 +37,24 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-int make_unique(vi &a) {
-   auto ip = unique(all(a));
-   int n_size = distance(a.begin(), ip);
-   a.resize(n_size);
-   return n_size;
-}
-
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         cin >> a[i][j];
-      }
-   }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
-}
-
 void solve() {
-   int n, c, d; cin >> n >> c >> d;
-   vi b(n*n); input(b, n*n);
-   sort(all(b));
-   int mini = b[0];
-   vi valid;
-   for (int i = 0; i < n; i++) {
-      valid.push_back(mini);
-      for (int j = 1; j < n - i; j++) {
-         valid.push_back(mini + (c*j));
-         valid.push_back(mini + (d*j));
-      }
-      mini += (c + d);
-   }
-   sort(all(valid));
-   for (int i =0 ; i < n * n; i++) {
-      // cout << valid[i] << ' '; 
-      if (b[i] != valid[i]) {
-         cout << "NO\n";
+   int n; cin >> n;
+   vi a(n); cin >> a;
+   if (n == 1) cout << a[0] << endl;
+   else {
+      int pos = count_if(all(a), [&](int i) {
+         return i >= 0;
+      });
+      if (pos) for (int i = 0; i < n; i++) a[i] = max(a[i], 0);
+      else {
+         cout << *max_element(all(a)) << endl;
          return;
       }
+      ll s1 = a[0], s2 = a[1];
+      for (int i = 2; i < n; i+=2) s1 += max(a[i], 0);
+      for (int i = 3; i < n; i+=2) s2 += max(a[i], 0);
+      cout << max(s1, s2) << endl;
    }
-   cout << "YES\n";
 }
 
 

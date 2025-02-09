@@ -37,32 +37,35 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
+
 void solve() {
-   int n; cin >> n;
-   vi a(n); cin >> a;
+   vector<string> a(2); cin >> a;
+   int b = 0, s = 1, n = a[0].size();
 
-   int maxi = INT_MIN;
-   
-   // maximize the medium of 2
-   for (int i = 0; i < n-1; i++) {
-      maxi = max(maxi, min(a[i], a[i+1]));
+   bool flag = false;
+   for (int i = 0; i < n; i++) {
+      if (flag && a[b][i] > a[s][i]) swap(a[b][i], a[s][i]);
+      if (!flag && (a[1][i] > a[0][i]) ) {
+         b = 1; s = 0;
+         flag = true;
+      } else if (!flag && (a[1][i] < a[0][i])) {
+         b = 0, s= 1;
+         flag = true;
+      }
    }
-   // maximize the med of 3
-   for (int i = 0; i < n-2; i++) {
-      ll sum = 0ll + a[i] + a[i+1] + a[i+2];
-      int m = max({a[i] , a[i+1] , a[i+2]});
-      int m_ = min({a[i] , a[i+1] , a[i+2]});
-      maxi = max((ll)maxi, sum - m - m_);
-   }
-
-   cout << maxi << endl;
+   cout << a[0] << endl << a[1] << endl;
 }
 
 
 int main() {
    FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
    int t; t = 1;
    cin >> t;
    while (t--) solve();
    return 0;
 }
+

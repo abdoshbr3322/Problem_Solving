@@ -1,3 +1,4 @@
+// بسم الله الرحمن الرحيم
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +15,8 @@
 #include <cmath>
 using namespace std;
 
+template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
+template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
 #define FreePalestine                       \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
@@ -34,61 +37,37 @@ using namespace std;
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-int make_unique(vi &a) {
-   auto ip = unique(all(a));
-   int n_size = distance(a.begin(), ip);
-   a.resize(n_size);
-   return n_size;
+bool isC(char c) {
+   return (c == 'b' || c == 'c' || c == 'd');
+}
+bool isV(char c) {
+   return (c == 'a' || c == 'e');
+}
+bool isCV(string s) {
+   return (isC(s[0]) && isV(s[1]));
+}
+bool isCVC(string s) {
+   return (isC(s[0]) && isV(s[1]) && isC(s[2]));
 }
 
-void input2D(vvi &a, int n, int m) {
-   for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-         int ai;
-         cin >> ai;
-         a[i].push_back(ai);
-      }
-   }
-}
-
-void input(vi &a, int n) {
-   for (int i = 0; i < n; i++)  {
-      cin >> a[i];
-   }
-}
 void solve() {
    int n; cin >> n;
-   vi a(n); input(a, n);
-   vi b;
-
-   int mini = *min_element(all(a));
-   for (int i = 0; i < n; i++) {
-      if (a[i] % mini) b.push_back(a[i]);
-   }
-   if (b.empty()) {
-      cout << "YES\n";
-   } else {
-      int mini2 = *min_element(all(b));
-      for (int i = 0; i < b.size(); i++) {
-         if (b[i] % mini2) {
-            cout << "NO\n";
-            return;
-         }
-      }
-      cout << "YES\n";
-   }
-   
+   vi a(n); cin >> a;
+   ll sum  = accumulate(all(a), 0ll);
+   if (sqrt(sum) == (int)(sqrt(sum))) cout << "YES\n";
+   else cout << "NO\n";
 }
 
-// consider this test
-// 1
-// 6
-// 2 4 9 18 27 36
 
 int main() {
    FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
    int t; t = 1;
    cin >> t;
    while (t--) solve();
    return 0;
 }
+
