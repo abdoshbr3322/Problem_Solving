@@ -38,33 +38,45 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define sum_a(n) n *(n + 1) / 2
 
 
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
-         }
-      }
+vll prefix_sum(vi &a) {
+   int n = a.size();
+   vll prefix(n+1, 0);
+   for (int i = 0; i < a.size(); i++) {
+      prefix[i+1] += a[i] + prefix[i];
    }
-   return divide;
+   return prefix;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
+void solve() {
+   ll n; cin >> n;
+   vll a(n); cin >> a;
+   
+   vll freq(n+1);
+   for (auto i : a) freq[i]++;
+   
+   ll extra = INT_MAX, fail = 0;
+   for (int i = 0; i <= n ;i++) {
+      // cout << i << ' ' << freq[i] << endl;
+      if (freq[i] == 0) {
+         cout << i << endl;
+         return;
+      }
+      if (freq[i] == 1) {
+         if (fail) {
+            cout << i << endl;
+            return;
+         }
+         fail = 1;
+      }
    }
-   return res;
+}
+
+
+int main() {
+   FreePalestine;
+   int t; t = 1;
+   cin >> t;
+   while (t--) solve();
+   return 0;
 }

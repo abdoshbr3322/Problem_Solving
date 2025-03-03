@@ -66,6 +66,15 @@ vvll prefix_sum_2d(vvi &a) {
    return prefix;
 }
 
-ll rect_sum(int x1, int y1, int x2, int y2, vvll &p) {
-   return (p[y2][x2] - p[y2][x1-1] - p[y1-1][x2] + p[y1-1][x1-1]);
+// for 1 based
+ll rect_sum(int x1, int y1, int x2, int y2, vvi &p) {
+   return (p[x2][y2] - p[x2][y1-1] - p[x1-1][y2] + p[x1-1][y1-1]);
 }
+// for 0 based
+// ll rect_sum(vvll& prefix, int x1, int y1, int x2, int y2) {
+//    ll sum = prefix[x2][y2];
+//    if (y1 > 0) sum -= prefix[x2][y1-1];
+//    if (x1 > 0) sum -= prefix[x1-1][y2];
+//    if (x1 > 0 && y1 > 0) sum += prefix[x1-1][y1-1];
+//    return sum;
+// }

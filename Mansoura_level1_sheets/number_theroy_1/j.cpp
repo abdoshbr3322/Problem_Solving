@@ -37,15 +37,15 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-
-vector<int> sieve(int n) { // O (n . log(n))
+vector<int> sieve(int n) {
    vector<int> divide(n+1);
-   vector<int> primes;
+   vector<int> primes(n+1, 0);
    vector<bool> is_prime(n+1, true);
    is_prime[0] = is_prime[1] = false;
+   int cur = 1;
    for (int i = 2; i <= n; i++) {
       if (is_prime[i]) {
-         primes.push_back(i);
+         primes[cur++] = i;
          divide[i] = i;
          for (int j = 2 * i; j <= n; j+=i) {
             is_prime[j] = false;
@@ -59,12 +59,43 @@ vector<int> sieve(int n) { // O (n . log(n))
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
+map<int, int> prime_factors_sieve(int n, vector<int>& divide) {
+   map<int, int> res;
    while (n != 1) {
       int p = divide[n];
-      res.push_back(p);
+      res[p]++;
       n /= p;
    }
    return res;
+}
+
+
+
+void solve() {
+   int t; cin >> t;
+   vi divide = sieve(1e7);
+   while (t--) {
+      int n; cin >> n;
+      map<int, int> po = prime_factors_sieve(n, divide);
+      int even = 0, odd = 0;
+      for (auto [i, f] : po) {
+         if (f % 2 == 0) even++;
+         else odd++;
+      }
+      if (even > odd) cout << "Psycho Number\n";
+      else cout << "Ordinary Number\n";
+   }
+}
+
+
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }

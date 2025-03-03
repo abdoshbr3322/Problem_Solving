@@ -38,33 +38,51 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define sum_a(n) n *(n + 1) / 2
 
 
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
-         }
+void solve() {
+   int n; cin >> n;
+   vi a(n); cin >> a;
+
+   vi freq(2e5+1);
+   int l = 0, r = 0;
+   int mx = 0, cnt = 0, ans = INT_MIN, cur_mx = 0, cnt_2 = 0;
+   while (r < n) {
+      freq[a[r]]++;
+      while (freq[a[r]] > 1) {
+         freq[a[l]]--;
+         l++;
+         cnt = 0;
+         cur_mx = 0;
+         cnt_2 = 0;
       }
+      cur_mx = max(cur_mx, a[r]);
+      if (a[r] <= mx) cnt++;
+      if (a[r] <= cur_mx) cnt_2++;
+      if (cnt_2 == cur_mx + 1) {
+         mx = max(cur_mx, mx);
+
+      }
+      else if (cnt == mx) {
+         ans = max(ans, r- l + 1);
+      }
+      else if (cnt == mx + 1) {
+         mx++;
+         ans = r- l + 1;
+      }
+      
+      r++;
    }
-   return divide;
+   cout << ans << endl;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
-   }
-   return res;
+signed main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }

@@ -37,34 +37,51 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
-         }
-      }
-   }
-   return divide;
+int compare_char(char c1, char c2) {
+   if (c1 > c2) return 1;
+   if (c1 < c2) return -1;
+   else return 0;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
+void solve() {
+   int n; cin >> n;
+   vector<string> a(2, string(n, '0')); cin >> a;
+
+   vi dp(n+1);
+   for (int i = n-2; i >= 0; i--) {
+      int comp = compare_char(a[0][i+1], a[1][i]);
+      dp[i] = comp ? comp : dp[i+1];
    }
-   return res;
+
+   string ans; int paths = 1;
+   ans += a[0][0];
+   for (int i = 0; i < n-1; i++) {
+      if (dp[i] == 0) {
+         paths++;
+         ans += a[0][i+1];
+      } else if (dp[i] == -1) {
+         ans += a[0][i+1];
+      } else {
+         ans += a[1].substr(i, n-i-1);
+         for (int j = i; j < n-1; j++) {
+            int comp = compare_char(a[0][j+1], a[1][j]);
+            if (comp == 0) paths++;
+            else break;
+         }
+         break;
+      }
+   }
+   ans += a[1][n-1];
+   cout << ans << endl;
+   cout << paths << endl;
+}
+
+
+int main() {
+   FreePalestine;
+   int t; t = 1;
+   cin >> t;
+   while (t--) solve();
+   return 0;
 }

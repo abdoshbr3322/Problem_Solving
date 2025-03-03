@@ -5,14 +5,16 @@
 #include <climits>
 #include <numeric>
 #include <cstring>
-#include <string>
+#include <iomanip>
+#include <unordered_map>
+#include <cmath>
 #include <vector>
 #include <array>
 #include <set>
-#include <iomanip>
-#include <unordered_map>
+#include <stack>
+#include <queue>
 #include <map>
-#include <cmath>
+#include <string>
 using namespace std;
 
 template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
@@ -37,34 +39,36 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
+void solve() {
+   int n; cin >> n;
 
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
-         }
+   for (int i = 0; i < n; i++) {
+      for (int j = 0; j <  n; j++) {
+         char c;
+         if (i % 2 == j % 2) c = '#';
+         else c = '.';
+         cout << c << c;
       }
+      cout << endl;
+      for (int j = 0; j <  n; j++) {
+         char c;
+         if (i % 2 == j % 2) c = '#';
+         else c = '.';
+         cout << c << c;
+      }
+      cout << endl;
    }
-   return divide;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
-   }
-   return res;
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   cin >> t;
+   while (t--) solve();
+   return 0;
 }

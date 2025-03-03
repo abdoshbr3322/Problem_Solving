@@ -38,7 +38,9 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define sum_a(n) n *(n + 1) / 2
 
 
-vector<int> sieve(int n) { // O (n . log(n))
+const int MOD = 1073741824;
+
+vector<int> sieve(int n) {
    vector<int> divide(n+1);
    vector<int> primes;
    vector<bool> is_prime(n+1, true);
@@ -58,13 +60,50 @@ vector<int> sieve(int n) { // O (n . log(n))
    return divide;
 }
 
-
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
+int d(int n, vector<int>& divide) {
+   if (n == 1) return 1;
+   int res = 1;
+   int prev = 0, cnt = 1;
    while (n != 1) {
       int p = divide[n];
-      res.push_back(p);
+      if (p == prev) cnt++;
+      else if (prev != 0) {
+         res *= ++cnt;
+         cnt = 1;
+      }
+
+      prev = p;
       n /= p;
    }
+   res *= ++cnt;
    return res;
+}
+
+
+void solve() {
+   int a, b, c; cin >> a >> b >> c;
+   vi divide = sieve(1e6);
+   int ans = 0;
+   for (int i = 1; i <= a; i++) {
+      for (int j = 1; j <= b; j++) {
+         for (int k = 1; k <= c; k++) {
+            ans += d(i * j * k, divide);
+            ans %= MOD;
+         }
+      }
+   }
+   cout << ans << endl;
+}
+
+
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }

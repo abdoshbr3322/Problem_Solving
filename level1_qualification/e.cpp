@@ -37,26 +37,28 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-
-vi prime_factorize(int n) {
-   vi res;
-   for (int i = 2; 1ll * i * i <= n; i++) {
-      while (n % i == 0) {
-         n /= i;
-         res.push_back(i);
-      }
-   }
-   if (n != 1) res.push_back(n);
-   return res;
+void solve() {
+   string s; cin >> s;
+   int n = s.size();
+   int idx = s.find("WUB");
+   while (idx != string::npos) {
+      s.erase(s.begin()+idx, s.begin()+idx+3);
+      if (idx > 0 && idx < n-1 && s[idx-1]!=' ')
+         s.insert(s.begin()+idx, ' ');
+      idx = s.find("WUB");
+}
+   cout << s << endl;
 }
 
-vi get_divisors(int n) {
-   vi res;
-   for (int i = 1; 1ll * i * i <= n; i++) {
-      if (n % i == 0) {
-         res.push_back(i);
-         if (1ll * i * i != n) res.push_back(n / i);
-      }
-   }
-   return res;
+
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }
