@@ -5,22 +5,26 @@
 #include <climits>
 #include <numeric>
 #include <cstring>
-#include <string>
+#include <iomanip>
+#include <unordered_map>
+#include <cmath>
 #include <vector>
 #include <array>
 #include <set>
-#include <iomanip>
-#include <unordered_map>
+#include <stack>
+#include <queue>
 #include <map>
-#include <cmath>
+#include <string>
 using namespace std;
 
 template<typename T> ostream& operator<<(ostream& os, vector<T>& v) { for (auto& i : v) os << i << ' '; return os; }
 template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto& i : v) is >> i; return is; }
-#define FreePalestine                       \
+#define FreePalestine                \
    ios_base::sync_with_stdio(false); \
    cin.tie(NULL);                    \
    cout.tie(NULL)
+
+#define int ll
 #define endl '\n'
 #define ll long long
 #define ull unsigned long long
@@ -37,34 +41,36 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
+int gcd(int a, int b) {
+   if (a < b) swap(a, b);
+   if (b == 0) return a;
+   return gcd(b, a % b);
+}
 
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
+void solve() {
+   while (true) {
+      int n; cin >> n;
+      if (n == 0) break;
+      ll ans = 0;
+   
+      for (int i =1 ; i <= n; i++) {
+         for (int j = i + 1; j <= n; j++) {
+            ans += gcd(i, j);
          }
       }
+      cout << ans << endl;
    }
-   return divide;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
-   }
-   return res;
+signed main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }

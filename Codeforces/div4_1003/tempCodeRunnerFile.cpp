@@ -37,34 +37,47 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
+void solve() {
+   ll n, m; cin >> n >> m;
+   vll a(n), b(m); cin >> a >> b;
+   sort(all(b));
+   int cnt = 0;
+   for (int i = 0; i < n; i++) {
+      auto l = b.begin();
+      if (i > 0) {
+         l = lower_bound(all(b), a[i] + a[i-1]);
+      }
+      if (l != b.end()) {
+         bool ok1 = true;
+         if (i > 0) {
+            ok1 = ((*l - a[i]) >= a[i-1]);
+         }
+         bool ok2 = true;
+         if (i < n-1) {
+            ok2 = ((*l - a[i]) <= a[i+1]);
+         }
+         if (ok1 && ok2) {
+            a[i] =  *l - a[i];
+            cnt++;
          }
       }
    }
-   return divide;
+   if (cnt > 0) {
+      cout << (is_sorted(all(a)) ? "YES\n" : "NO\n");
+   } else {
+      cout << "NO\n";
+   }
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
-   }
-   return res;
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   cin >> t;
+   while (t--) solve();
+   return 0;
 }

@@ -41,9 +41,43 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
+int gcd(int a, int b) {
+   if (a < b) swap(a, b);
+   if (b == 0) return a;
+   return gcd(b, a % b);
+}
+
+int lcm(int a, int b) {
+   return a * b / gcd(a, b);
+}
+
+vi get_divisors(int n) { // O(sqrt(n))
+   vi res;
+   for (int i = 1; 1ll * i * i <= n; i++) {
+      if (n % i == 0) {
+         res.push_back(i);
+         if (1ll * i * i != n) res.push_back(n / i);
+      }
+   }
+   return res;
+}
 
 void solve() {
+   ll n; cin >> n;
 
+   while (true) {
+      cin >> n;
+      int ans = 0;
+      if (n == 0) break;
+      vi divs = get_divisors(n);
+      int s = divs.size();
+      for (int i = 0; i < s; i++) {
+         for (int j = i; j < s; j++) {
+            if (lcm(divs[i], divs[j]) == n) ans++;
+         }
+      }
+      cout << n << ' ' << ans << endl;
+   }
 }
 
 
@@ -54,7 +88,7 @@ signed main() {
    //    freopen("output.txt", "w", stdout); 
    // #endif 
    int t; t = 1;
-   cin >> t;
+   // cin >> t;
    while (t--) solve();
    return 0;
 }

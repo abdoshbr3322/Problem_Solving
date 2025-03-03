@@ -38,9 +38,9 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define sum_a(n) n *(n + 1) / 2
 
 
-vector<int> sieve(int n) { // O (n . log(n))
+vector<bool> sieve(int n) {
    vector<int> divide(n+1);
-   vector<int> primes;
+   vector<int> primes(n+1, 0);
    vector<bool> is_prime(n+1, true);
    is_prime[0] = is_prime[1] = false;
    for (int i = 2; i <= n; i++) {
@@ -55,16 +55,31 @@ vector<int> sieve(int n) { // O (n . log(n))
          }
       }
    }
-   return divide;
+   return is_prime;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
+void solve() {
+   int n; cin >> n;
+   vector<bool> is_prime = sieve(1e6);
+   for (int i = 0; i < n; i++) {
+      ll ai; cin >> ai;
+      double sq  = sqrt(ai);
+      if (sq == (int)sq && is_prime[sq]) cout << "YES\n";
+      else cout <<"NO\n";
    }
-   return res;
+}
+
+
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   
+   while (t--) solve();
+   return 0;
 }

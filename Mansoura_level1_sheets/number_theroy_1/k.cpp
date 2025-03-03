@@ -37,15 +37,15 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-
-vector<int> sieve(int n) { // O (n . log(n))
+vector<bool> is_prime(1001, true);
+vector<int> sieve(int n) {
    vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
+   vector<int> primes(n+1, 0);
    is_prime[0] = is_prime[1] = false;
+   int cur = 1;
    for (int i = 2; i <= n; i++) {
       if (is_prime[i]) {
-         primes.push_back(i);
+         primes[cur++] = i;
          divide[i] = i;
          for (int j = 2 * i; j <= n; j+=i) {
             is_prime[j] = false;
@@ -55,16 +55,36 @@ vector<int> sieve(int n) { // O (n . log(n))
          }
       }
    }
-   return divide;
+   return primes;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
+
+void solve() {
+   int n, k; cin >> n >> k;
+   vi p = sieve(1000);
+   int ans = 0;
+   for (int i = 2; i < n; i++) {
+      if (!is_prime[i]) continue;
+      for (int j = 0; j < 1000; j++) {
+         if (p[j] + p[j+1] + 1 == i) {
+            ans++;
+            break;
+         }
+      }
    }
-   return res;
+   cout << (ans >= k ? "YES\n" : "NO\n");
+}
+
+
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   // cin >> t;
+   while (t--) solve();
+   return 0;
 }

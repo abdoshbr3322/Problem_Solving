@@ -37,34 +37,45 @@ template<typename T> istream& operator>>(istream& is, vector<T>& v) { for (auto&
 #define all_r(a) a.rbegin(), a.rend()
 #define sum_a(n) n *(n + 1) / 2
 
-
-vector<int> sieve(int n) { // O (n . log(n))
-   vector<int> divide(n+1);
-   vector<int> primes;
-   vector<bool> is_prime(n+1, true);
-   is_prime[0] = is_prime[1] = false;
-   for (int i = 2; i <= n; i++) {
-      if (is_prime[i]) {
-         primes.push_back(i);
-         divide[i] = i;
-         for (int j = 2 * i; j <= n; j+=i) {
-            is_prime[j] = false;
-            if (divide[j] == 0) {
-               divide[j] = i;
-            }
-         }
+vi prime_factors(int n) {
+   vi res;
+   for (int i = 2; 1ll * i * i <= n; i++) {
+      while (n % i == 0) {
+         n /= i;
+         res.push_back(i);
       }
    }
-   return divide;
+   if (n != 1) res.push_back(n);
+   return res;
 }
 
 
-vector<int> prime_factors_sieve(int n, vector<int>& divide) { // O(log(n))
-   vector<int> res;
-   while (n != 1) {
-      int p = divide[n];
-      res.push_back(p);
-      n /= p;
+bool semi_prime(int n) {
+   vi f = prime_factors(n);
+   return (f.size() == 2 && f[0] != f[1]);
+}
+
+void solve() {
+   int n; cin >> n;
+   for (int i = 1; (i * 2) <= n; i++) {
+      if (semi_prime(i) && semi_prime(n-i)) {
+         // cout << i << ' ' << n - i << endl;
+         cout << "YES\n";
+         return;
+      }
    }
-   return res;
+   cout << "NO\n";
+}
+
+
+int main() {
+   FreePalestine;
+   // #ifndef ONLINE_JUDGE 
+   //    freopen("input.txt", "r", stdin); 
+   //    freopen("output.txt", "w", stdout); 
+   // #endif 
+   int t; t = 1;
+   cin >> t;
+   while (t--) solve();
+   return 0;
 }
